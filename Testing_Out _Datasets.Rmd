@@ -1,42 +1,48 @@
 
-```{r}
-library(readr)
-possum <- read_csv("possum.csv")
-#View(possum)
-```
-
-
-```{r}
-possum_nocase = subset(possum, select = -c(case))
-#View(possum_nocase)
-#str(possum_nocase)
-#summary(possum_nocase)
-```
-
-
-```{r}
-possum_clean = na.omit(possum)
-summary(possum_clean)
-```
-
-
 #Install Packages
 ```{r}
 #install.packages("factoextra")
 ```
 
-#Libraries
+
+
 ```{r}
+library(readr)
+library(tidyverse)
 library(factoextra)
-library(ggplot2)
+```
+
+
+```{r}
+possum_raw <- read_csv("possum.csv")
+#View(possum_raw)
+```
+
+
+```{r}
+
+possum <- data.frame(possum_raw, row.names = 1)
+#View(possum)
+```
+
+
+```{r}
+possum_clean = na.omit(possum)
+str(possum_clean)
+summary(possum_clean)
+
 ```
 
 
 
+
 ```{r}
-dimnames(possum_clean)
-possum.pca = prcomp(possum_clean, center = TRUE, scale. = TRUE)
+possum_pca = subset(possum_clean, select = -c(site, Pop, sex))
+possum.pca = prcomp(possum_pca, center = TRUE, scale. = TRUE)
 summary(possum.pca)
+#View(possum.pca$rotation)
+possum.pca$rotation
+
 ```
 
 
@@ -76,9 +82,8 @@ biplot(possum.pca, choices = 1:2, scale = 1, pc.biplot = FALSE)
 ```{r}
 coord = possum.pca$x # pulls out just the info from the pca results
 plot(coord[,1], coord[,2]) # plots the first two axes of the pca
-text(coord[,1], coord[,2], row.names(possum_clean))
-plot(coord[,1], coord[,2], cex= 0.1*possum_clean$age) # now the symbol size tells you mpg
-text(coord[,1], coord[,2], row.names(possum_clean))
+plot(coord[,1], coord[,2], cex= 0.1*possum_pca$age) # now the symbol size tells you mpg
+#text(coord[,1], coord[,2], row.names(possum_pca))
 ```
 
 

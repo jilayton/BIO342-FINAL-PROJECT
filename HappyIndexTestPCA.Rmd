@@ -1,0 +1,60 @@
+
+```{r}
+#install.packages("factoextra")
+```
+
+```{r}
+library(readr)
+library(tidyverse)
+library(factoextra)
+```
+
+
+```{r}
+HappyPlanetIndex_raw <- read_csv("HappyPlanetIndex.csv")
+#View(HappyPlanetIndex)
+```
+
+
+```{r}
+library(factoextra)
+dimnames(HappyPlanetIndex)
+HappyPlanetIndex_clean = na.omit(HappyPlanetIndex_raw)
+happi_nocase = subset(HappyPlanetIndex_clean, select = -c(Country))
+happi.pca <- prcomp(happi_nocase, center=TRUE, scale. = TRUE)
+summary(happi.pca)
+#View(happi.pca$rotation)
+happi.pca$rotation
+```
+```{r}
+fviz_eig(happi.pca)
+```
+```{r}
+fviz_pca_ind(happi.pca,
+             col.ind = "cos2", # Color by the quality of representation
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE     # Avoid text overlapping
+             )
+```
+```{r}
+fviz_pca_var(happi.pca,
+             col.var = "contrib", # Color by contributions to the PC
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE     # Avoid text overlapping
+)
+
+```
+```{r}
+fviz_pca_biplot(happi.pca, repel = TRUE,
+                col.var = "#2E9FDF", # Variables color
+                col.ind = "#696969"  # Individuals color
+)
+```
+```{r}
+coord<-happi.pca$x 	#pulls out just the plotting information from the pca results
+plot(coord[,1], coord[,2]) 	#plots the first two axes of the pca
+plot(coord[,1], coord[,2], cex=0.1*HappyPlanetIndex_clean$Happiness) 	#Now the symbol size tells you mpg
+
+#text(coord[,1], coord[,2], row.names(HappyPlanetIndex_clean)) 
+```
+

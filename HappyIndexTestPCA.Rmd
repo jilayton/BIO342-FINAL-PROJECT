@@ -18,8 +18,7 @@ HappyPlanetIndex_raw <- read_csv("HappyPlanetIndex.csv")
 
 
 ```{r}
-library(factoextra)
-dimnames(HappyPlanetIndex)
+
 HappyPlanetIndex_clean = na.omit(HappyPlanetIndex_raw)
 happi_nocase = subset(HappyPlanetIndex_clean, select = -c(Country))
 happi.pca <- prcomp(happi_nocase, center=TRUE, scale. = TRUE)

@@ -23,6 +23,7 @@ possum_raw <- read_csv("possum.csv")
 
 possum <- data.frame(possum_raw, row.names = 1)
 #View(possum)
+summary(possum)
 ```
 
 

@@ -1,0 +1,90 @@
+---
+title: "Possum NMS"
+author: "Jude"
+date: "2023-11-16"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+
+```
+
+#Install Packages
+```{r}
+#install.packages("factoextra")
+#install.packages("vegan")
+#install.packages("mvabund")
+```
+
+#Libraries
+```{r}
+library(readr)
+library(tidyverse)
+library(factoextra)
+library(vegan)
+library(mvabund)
+```
+
+```{r}
+possum_raw <- read_csv("possum.csv")
+possum_clean = na.omit(possum_raw)
+#View(possum_raw)
+#summary(possum_clean)
+```
+
+
+```{r}
+possum <- data.frame(possum_clean, row.names = 1)
+possum_numeric = subset(possum, select = -c(site, Pop, sex))
+#View(possum)
+str(possum_numeric)
+summary(possum_numeric)
+```
+
+
+
+```{r}
+nmsfood = metaMDS(possum_numeric)
+```
+
+
+```{r}
+str(nmsfood)
+```
+
+
+```{r}
+summary(nmsfood)
+```
+
+
+```{r}
+nmsfood$species
+```
+
+```{r}
+plot(nmsfood)
+plot(nmsfood, type = "t", display=c("sites"))
+plot(nmsfood, type = "t", display=c("sites", "species"))
+```
+
+
+```{r}
+plot(nmsfood)
+plot(nmsfood, type = "t", display=c("sites"))
+```
+
+
+
+
+
+
+
+
+
+
+

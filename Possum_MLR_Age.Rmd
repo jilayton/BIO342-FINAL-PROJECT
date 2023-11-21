@@ -134,6 +134,9 @@ Best model = mod 5 = lm(age~Pop+hdlngth+taill+footlgth+eye+chest+belly, data = p
 Results: A multiple regression model containing Pop+hdlngth+taill+footlgth+eye+chest+belly explained 22.08% of the variance in age (F=3.766, p=0.0316). PopVic had a significant positive effect (t= 2.182, p= 0.00208) and footlgth had a significant negative effect (t= -2.167, p= 0.0328), but overall the model was not accurate due to the incredibly low r^2.
 ```
 
+```{r}
+plot(mod5)
+```
 
 
 

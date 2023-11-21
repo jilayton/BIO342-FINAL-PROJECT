@@ -1,0 +1,142 @@
+---
+title: "Possum MLR"
+author: "Jude"
+date: "2023-11-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+#Install Packages
+```{r}
+#install.packages("factoextra")
+#install.packages("vegan")
+#install.packages("mvabund")
+```
+
+#Libraries
+```{r}
+library(readr)
+library(tidyverse)
+library(factoextra)
+library(vegan)
+library(mvabund)
+```
+
+```{r}
+possum_raw <- read_csv("possum.csv")
+possum_clean = na.omit(possum_raw)
+#View(possum_raw)
+#summary(possum_clean)
+```
+
+
+```{r}
+possum <- data.frame(possum_clean, row.names = 1)
+#possum_numeric = subset(possum, select = -c(site, Pop, sex))
+#View(possum)
+summary(possum)
+#str(possum_numeric)
+#summary(possum_numeric)
+```
+
+
+
+
+```{r}
+# 12 variables
+mod0 = lm(age~site+Pop+sex+hdlngth+skullw+totlngth+taill+footlgth+earconch+eye+chest+belly, data = possum)
+summary(mod0)
+```
+
+
+
+```{r}
+# least significant previous variable = totlngth, previous adj r^2 = 0.1322
+# 11 variables
+mod1 = lm(age~site+Pop+sex+hdlngth+skullw+taill+footlgth+earconch+eye+chest+belly, data = possum)
+summary(mod1)
+```
+
+
+```{r}
+# least significant previous variable = sex, previous adj r^2 = 0.142
+# 10 variables
+mod2 = lm(age~site+Pop+hdlngth+skullw+taill+footlgth+earconch+eye+chest+belly, data = possum)
+summary(mod2)
+```
+
+
+```{r}
+# least significant previous variable = skullw, previous adj r^2 = 0.1484
+# 9 variables
+mod3 = lm(age~site+Pop+hdlngth+taill+footlgth+earconch+eye+chest+belly, data = possum)
+summary(mod3)
+```
+
+
+```{r}
+# least significant previous variable = earconch, previous adj r^2 = 0.1548
+# 8 variables
+mod4 = lm(age~site+Pop+hdlngth+taill+footlgth+eye+chest+belly, data = possum)
+summary(mod4)
+```
+
+
+```{r}
+# least significant previous variable = site, previous adj r^2 = 0.1597
+# 7 variables
+mod5 = lm(age~Pop+hdlngth+taill+footlgth+eye+chest+belly, data = possum)
+summary(mod5)
+```
+
+
+```{r}
+# least significant previous variable = taill, previous adj r^2 = 0.1622
+# 6 variables
+mod6 = lm(age~Pop+hdlngth+footlgth+eye+chest+belly, data = possum)
+summary(mod6)
+```
+
+
+```{r}
+# least significant previous(x2) variable besides taill = chest, previous adj r^2 = 0.1618 (1622 before that)
+# 6 variables
+mod6a = lm(age~Pop+hdlngth+taill+footlgth+eye+belly, data = possum)
+summary(mod6a)
+```
+
+
+```{r}
+# least significant previous(x2) variable besides taill and chest = , previous adj r^2 = 0.16 (1622 before that)
+# 6 variables
+mod6b = lm(age~Pop+hdlngth+taill+footlgth+chest+belly, data = possum)
+summary(mod6b)
+```
+
+```{r}
+summary(mod5)
+```
+
+
+
+```{}
+Best model = mod 5 = lm(age~Pop+hdlngth+taill+footlgth+eye+chest+belly, data = possum)
+
+Results: A multiple regression model containing Pop+hdlngth+taill+footlgth+eye+chest+belly explained 22.08% of the variance in age (F=3.766, p=0.0316). PopVic had a significant positive effect (t= 2.182, p= 0.00208) and footlgth had a significant negative effect (t= -2.167, p= 0.0328), but overall the model was not accurate due to the incredibly low r^2.
+```
+
+
+
+
+
+
+

@@ -129,16 +129,19 @@ summary(mod5b)
 ```
 
 
+```{r}
+summary(mod4)
+```
+
 
 
 ```{}
 Best model = mod 4 = lm(age~site+hdlngth+taill+footlgth+eye+chest+belly, data = possum_log)
 
-Results: A multiple regression model containing site+hdlngth+taill+footlgth+eye+chest+belly explained 29.13% of the variance in age (F=2.425[12,99], p=<0.0001). Hdlngth had a significant positive effect (t= 2.0893, p= 0.005427) and footlgth had a significant negative effect (t= -2.741, p= 0.007415), but overall the model was not accurate due to the incredibly low r^2.
+Results: A multiple regression model containing site+hdlngth+taill+footlgth+eye+chest+belly explained 37.64% of the variance in age (F=2.425[12,88], p=<0.0001). Hdlngth had a significant positive effect (t= 2.0893, p= 0.005427) and footlgth had a significant negative effect (t= -2.741, p= 0.007415), but overall the model was not accurate due to the incredibly low r^2.
 ```
 
 ```{r}
-summary(mod4)
 plot(mod4)
 ```
 

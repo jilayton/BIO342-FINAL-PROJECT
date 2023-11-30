@@ -39,12 +39,112 @@ O_Possum <- possum_clean[possum_clean$Pop == "other", ]
 #str(O_Possum)
 #summary(V_Possum)
 #summary(O_Possum)
-V_Possum = subset(V_Possum, select = -c(Pop))
-O_Possum = subset(O_Possum, select = -c(Pop))
-#str(V_Possum)
+V_Possum = subset(V_Possum, select = -c(Pop, sex))
+O_Possum = subset(O_Possum, select = -c(Pop, sex))
+str(V_Possum)
 #str(O_Possum)
 #summary(V_Possum)
 #summary(O_Possum)
 ```
+
+
+```{r}
+#Vic possum PCA
+V_possum.pca <- prcomp(V_Possum, center = TRUE,scale. = TRUE)
+summary(V_possum.pca)
+
+fviz_eig(V_possum.pca)
+fviz_pca_ind(V_possum.pca,
+             col.ind = "cos2", # Color by the quality of representation
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE     # Avoid text overlapping
+)
+
+fviz_pca_var(V_possum.pca,
+             col.var = "contrib", # Color by contributions to the PC
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE     # Avoid text overlapping
+)
+
+fviz_pca_biplot(V_possum.pca, repel = TRUE,
+                col.var = "#2E9FDF", # Variables color
+                col.ind = "#696969"  # Individuals color
+)
+
+```
+
+```{r}
+#Some plots for Victoria Possums
+coord = V_possum.pca$x # pulls out just the info from the pca results
+plot(coord[,1], coord[,2]) # plots the first two axes of the pca
+
+plot(coord[,1], coord[,2], cex= 0.1*V_Possum$age) # now the symbol size tells you age
+
+V_possum.pca$sex = possum_clean$sex
+plot(coord[,1], coord[,2], pch=V_possum.pca$sex)
+
+#text(coord[,1], coord[,2], row.names(possum_pca))
+# plot(coord[,1], coord[,2], pch=possum_pca$sex)
+V_possum.pca$site = as.character(possum_clean$site)
+plot(coord[,1], coord[,2], pch=V_possum.pca$site)
+# possum_pca$Pop = possum_clean$Pop
+# plot(coord[,1], coord[,2], pch=possum_pca$Pop)
+```
+
+
+
+
+
+
+
+```{r}
+#Other Possum PCA
+
+O_possum.pca <- prcomp(O_Possum, center = TRUE,scale. = TRUE)
+summary(V_possum.pca)
+
+fviz_eig(O_possum.pca)
+fviz_pca_ind(O_possum.pca,
+             col.ind = "cos2", # Color by the quality of representation
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE     # Avoid text overlapping
+)
+
+fviz_pca_var(O_possum.pca,
+             col.var = "contrib", # Color by contributions to the PC
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE     # Avoid text overlapping
+)
+
+fviz_pca_biplot(O_possum.pca, repel = TRUE,
+                col.var = "#2E9FDF", # Variables color
+                col.ind = "#696969"  # Individuals color
+)
+
+```
+
+
+```{r}
+coord = O_possum.pca$x # pulls out just the info from the pca results
+plot(coord[,1], coord[,2]) # plots the first two axes of the pca
+
+plot(coord[,1], coord[,2], cex= 0.1*O_Possum$age) # now the symbol size tells you age
+
+O_possum.pca$sex = possum_clean$sex
+plot(coord[,1], coord[,2], pch=O_possum.pca$sex)
+# #text(coord[,1], coord[,2], row.names(possum_pca))
+# plot(coord[,1], coord[,2], pch=possum_pca$sex)
+
+O_possum.pca$site = as.character(possum_clean$site +2)
+plot(coord[,1], coord[,2], pch=O_possum.pca$site)
+# possum_pca$Pop = possum_clean$Pop
+# plot(coord[,1], coord[,2], pch=possum_pca$Pop)
+```
+
+
+
+
+
+
 
 

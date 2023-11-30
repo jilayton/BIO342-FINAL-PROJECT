@@ -2,6 +2,7 @@
 #Install Packages
 ```{r}
 #install.packages("factoextra")
+#install.packages("forcats")
 ```
 
 
@@ -10,6 +11,7 @@
 library(readr)
 library(tidyverse)
 library(factoextra)
+library(forcats)
 ```
 
 
@@ -43,8 +45,61 @@ possum.pca = prcomp(possum_pca, center = TRUE, scale. = TRUE)
 summary(possum.pca)
 #View(possum.pca$rotation)
 possum.pca$rotation
+```
+
+
+
+```{r}
+PCNames = c("age", "hdlngth", "skullw", "totlngth", "taill", "footlgth", "earconch", "eye", "chest", "belly")
+```
+
+
+```{r}
+PC1 = possum.pca$rotation[1:10]
+PC1_DF = tibble(PCNames, PC1)
+str(PC1_DF)
+#View(PC1_DF)
+```
+
+
+```{r}
+PC2 = possum.pca$rotation[11:20]
+PC2_DF = tibble(PCNames, PC2)
+str(PC2_DF)
+```
+
+
+```{r}
+PC3 = possum.pca$rotation[21:30]
+PC3_DF = tibble(PCNames, PC3)
+str(PC3_DF)
+```
+
+```{r}
+ggplot(PC1_DF, aes(x = fct_reorder(PCNames,PC1) , y = PC1)) + 
+  geom_col()+
+  labs(x = "Variable", y = "Effect on PC1")
 
 ```
+
+
+
+```{r}
+ggplot(PC2_DF, aes(x = fct_reorder(PCNames,PC2) , y = PC2)) + 
+  geom_col() +
+  labs(x = "Variable", y = "Effect on PC2")
+
+```
+
+
+```{r}
+ggplot(PC3_DF, aes(x = fct_reorder(PCNames,PC3) , y = PC3)) + 
+  geom_col() +
+  labs(x = "Variable", y = "Effect on PC3")
+
+```
+
+
 
 
 ```{r}
@@ -58,6 +113,17 @@ fviz_pca_ind(possum.pca,
              )
 
 ```
+
+
+```{r}
+fviz_pca_ind(possum.pca,
+             axes = c(2,1),
+             col.ind = "cos2", # Color by quality of representation
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE #Avoid text overlapping
+             )
+```
+
 
 
 ```{r}
@@ -93,40 +159,14 @@ biplot(possum.pca, choices = 2:1, scale = 1, pc.biplot = FALSE)
 ```{r}
 coord = possum.pca$x # pulls out just the info from the pca results
 plot(coord[,1], coord[,2]) # plots the first two axes of the pca
-plot(coord[,1], coord[,2], cex= 0.1*possum_pca$age) # now the symbol size tells you mpg
+plot(coord[,1], coord[,2], cex= 0.1*possum_pca$age) # now the symbol size tells you age
 #text(coord[,1], coord[,2], row.names(possum_pca))
 ```
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+```{r}
+ggplot() +
+  geom_point(data = coord, aes(x = coord[,1], y = coord[,2], col = ))
+```
 
 
 

@@ -47,6 +47,7 @@ str(possum_nocase)
 
 ```{r}
 possum_log = data.frame(possum_nocase)  # log thing
+
 possum_log$hdlngth = log(possum_log$hdlngth)
 possum_log$skullw = log(possum_log$skullw)
 possum_log$totlngth = log(possum_log$totlngth)
@@ -60,7 +61,6 @@ possum_log$age = log(possum_log$age)
 
 #possum_numeric = subset(possum, select = -c(site, Pop, sex))
 #View(possum)
-summary(possum_og)
 summary(possum_log)
 #str(possum_numeric)
 #summary(possum_numeric)

@@ -1,0 +1,50 @@
+
+```{r}
+library(readr)
+library(tidyverse)
+library(factoextra)
+library(forcats)
+```
+
+
+```{r}
+possum_raw <- read_csv("possum.csv")
+#View(possum_raw)
+```
+
+
+```{r}
+
+possum <- data.frame(possum_raw, row.names = 1)
+possum$site = as.factor(possum$site)
+possum$Pop = as.factor(possum$Pop)
+possum$sex = as.factor(possum$sex)
+#View(possum)
+summary(possum)
+```
+
+
+```{r}
+possum_clean = na.omit(possum)
+str(possum_clean)
+summary(possum_clean)
+
+```
+
+
+```{r}
+V_Possum <- possum_clean[possum_clean$Pop == "Vic", ]
+O_Possum <- possum_clean[possum_clean$Pop == "other", ]
+#str(V_Possum)
+#str(O_Possum)
+#summary(V_Possum)
+#summary(O_Possum)
+V_Possum = subset(V_Possum, select = -c(Pop))
+O_Possum = subset(O_Possum, select = -c(Pop))
+#str(V_Possum)
+#str(O_Possum)
+#summary(V_Possum)
+#summary(O_Possum)
+```
+
+

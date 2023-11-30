@@ -92,7 +92,7 @@ ggplot(PC2_DF, aes(x = fct_reorder(PCNames,PC2) , y = PC2)) +
 ```
 
 
-```{r}
+```{}
 ggplot(PC3_DF, aes(x = fct_reorder(PCNames,PC3) , y = PC3)) + 
   geom_col() +
   labs(x = "Variable", y = "Effect on PC3")

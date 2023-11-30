@@ -71,8 +71,8 @@ summary(possum_log)
 
 
 ```{r}
-# 12 variables
-mod0 = lm(age~site+Pop+sex+hdlngth+skullw+totlngth+taill+footlgth+earconch+eye+chest+belly, data = possum_log)
+# 11 variables, no Pop
+mod0 = lm(age~site+sex+hdlngth+skullw+totlngth+taill+footlgth+earconch+eye+chest+belly, data = possum_log)
 summary(mod0)
 plot(mod0)
 #hist(mod0$residuals)
@@ -81,66 +81,20 @@ plot(mod0)
 
 
 ```{r}
-# least significant previous variable = footlgth, previous adj r^2 = 0.2611
+# least significant previous variable = footlngth, previous adj r^2 = 0.2709
 # 11 variables
-mod1 = lm(age~site+Pop+sex+hdlngth+skullw+taill+totlngth+earconch+eye+chest+belly, data = possum_log)
+mod1 = lm(age~sex+site+hdlngth+skullw+totlngth+taill+earconch+eye+chest+belly, data = possum_log)
 summary(mod1)
+plot(mod1)
 ```
 
 
 ```{r}
-# stopped here
-# least significant previous variable = sex, previous adj r^2 = 0.142
-# 10 variables
-mod2 = lm(age~site+Pop+hdlngth+skullw+taill+footlgth+earconch+eye+chest+belly, data = possum)
-summary(mod2)
-```
 
-
-```{r}
-# least significant previous variable = skullw, previous adj r^2 = 0.1484
-# 9 variables
-mod3 = lm(age~site+Pop+hdlngth+taill+footlgth+earconch+eye+chest+belly, data = possum)
-summary(mod3)
-```
-
-
-```{r}
-# least significant previous variable = earconch, previous adj r^2 = 0.1548
-# 8 variables
-mod4 = lm(age~site+Pop+hdlngth+taill+footlgth+eye+chest+belly, data = possum)
-summary(mod4)
-```
-
-
-```{r}
-# least significant previous variable = site, previous adj r^2 = 0.1597
-# 7 variables
-mod5 = lm(age~Pop+hdlngth+taill+footlgth+eye+chest+belly, data = possum)
-summary(mod5)
-```
-
-
-```{r}
-# least significant previous variable = taill, previous adj r^2 = 0.1622
-# 6 variables
-mod6 = lm(age~Pop+hdlngth+footlgth+eye+chest+belly, data = possum)
-summary(mod6)
 ```
 
 
 
-```{r}
-summary(mod5)
-```
-
-
-```{r}
-# least significant previous variable = site, previous adj r^2 = 0.1597
-# 7 variables
-mod5_log = lm(age~Pop+hdlngth+taill+footlgth+eye+chest+belly, data = possum)
-summary(mod5)
-```
 ```{}
 Best model = mod 5 = lm(age~Pop+hdlngth+taill+footlgth+eye+chest+belly, data = possum)
 

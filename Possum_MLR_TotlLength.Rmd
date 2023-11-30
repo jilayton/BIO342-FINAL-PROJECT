@@ -62,37 +62,38 @@ possum_length = subset(possum_nocase, select = -c(hdlngth, taill))
 
 
 ```{r}
-# 10 variables
+# 9 variables
 mod0 = lm(totlngth~site+sex+skullw+age+footlgth+earconch+eye+chest+belly, data = possum_length)
 summary(mod0)
+plot(mod0)
 ```
 
 ```{r}
-# least significant previous variable = eye, previous adj r^2 = 0.4968 
-# 9 variables
+# least significant previous variable = chest, previous adj r^2 = 0.6007  
+# 8 variables
 mod1 = lm(totlngth~site+sex+skullw+age+footlgth+earconch+chest+belly, data = possum_length)
 summary(mod1)
 ```
 
 
 ```{r}
-# least significant previous variable = earconch, previous adj r^2 = 0.4996 
-# 8 variables
-mod2 = lm(totlngth~site+sex+skullw+age+footlgth+chest+belly, data = possum_length)
+# least significant previous variable = chest, previous adj r^2 = 0.6048  
+# 7 variables
+mod2 = lm(totlngth~site+sex+skullw+age+footlgth+belly, data = possum_length)
 summary(mod2)
 ```
 
 
 ```{r}
 # least significant previous variable = chest, previous adj r^2 = 0.5008 
-# 7 variables
+# 6 variables
 mod3 = lm(totlngth~site+sex+skullw+age+footlgth+belly, data = possum_length)
 summary(mod3)
 ```
 
 ```{r}
 # least significant previous variable = age, previous adj r^2 = 0.5018 
-# 6 variables
+# 5 variables
 mod4 = lm(totlngth~site+sex+skullw+footlgth+belly, data = possum_length)
 summary(mod4)
 ```

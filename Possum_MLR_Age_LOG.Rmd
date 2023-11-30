@@ -81,28 +81,68 @@ plot(mod0)
 
 
 ```{r}
-# least significant previous variable = footlngth, previous adj r^2 = 0.2709
+# least significant previous variable = totlngth, previous adj r^2 = 0.2709
 # 11 variables
-mod1 = lm(age~sex+site+hdlngth+skullw+totlngth+taill+earconch+eye+chest+belly, data = possum_log)
+mod1 = lm(age~site+sex+hdlngth+skullw+taill+footlgth+earconch+eye+chest+belly, data = possum_log)
 summary(mod1)
-plot(mod1)
 ```
 
 
 ```{r}
+# least significant previous variable = sex, previous adj r^2 = 0.2784
+# 10 variables
+mod2 = lm(age~site+hdlngth+skullw+taill+footlgth+earconch+eye+chest+belly, data = possum_log)
+summary(mod2)
+```
 
+```{r}
+# least significant previous variable = skullw, previous adj r^2 = 0.2835
+# 9 variables
+mod3 = lm(age~site+hdlngth+taill+footlgth+earconch+eye+chest+belly, data = possum_log)
+summary(mod3)
+```
+
+```{r}
+# least significant previous variable = earconch, previous adj r^2 = 0.2882
+# 8 variables
+mod4 = lm(age~site+hdlngth+taill+footlgth+eye+chest+belly, data = possum_log)
+summary(mod4)
+```
+```{r}
+# least significant previous variable = eye, previous adj r^2 = 0.2913
+# 7 variables
+mod5 = lm(age~site+hdlngth+chest+footlgth+belly+taill, data = possum_log)
+summary(mod5)
+```
+
+```{r}
+# least significant previous variable = besides eye = taill, previous adj r^2 = 0.2853 (0.2913 before this)
+# 7 variables
+mod5a = lm(age~site+hdlngth+chest+footlgth+belly+eye, data = possum_log)
+summary(mod5a)
+```
+```{r}
+# least significant previous variable = besides eye = besides taill = chest, previous adj r^2 = 0.28521
+# 7 variables
+mod5b = lm(age~site+hdlngth+taill+footlgth+belly+eye, data = possum_log)
+summary(mod5b)
+```
+
+
+```{r}
+summary(mod4)
 ```
 
 
 
 ```{}
-Best model = mod 5 = lm(age~Pop+hdlngth+taill+footlgth+eye+chest+belly, data = possum)
+Best model = mod 4 = lm(age~site+hdlngth+taill+footlgth+eye+chest+belly, data = possum_log)
 
-Results: A multiple regression model containing Pop+hdlngth+taill+footlgth+eye+chest+belly explained 22.08% of the variance in age (F=3.766, p=0.0316). PopVic had a significant positive effect (t= 2.182, p= 0.00208) and footlgth had a significant negative effect (t= -2.167, p= 0.0328), but overall the model was not accurate due to the incredibly low r^2.
+Results: A multiple regression model containing site+hdlngth+taill+footlgth+eye+chest+belly explained 37.64% of the variance in age (F=2.425[12,88], p=<0.0001). Hdlngth had a significant positive effect (t= 2.0893, p= 0.005427) and footlgth had a significant negative effect (t= -2.741, p= 0.007415), but overall the model was not accurate due to the incredibly low r^2.
 ```
 
 ```{r}
-plot(mod5)
+plot(mod4)
 ```
 
 

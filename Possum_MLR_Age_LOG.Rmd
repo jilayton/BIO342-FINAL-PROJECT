@@ -34,17 +34,22 @@ library(mvabund)
 ```{r}
 possum_raw <- read_csv("possum.csv")
 possum_clean = na.omit(possum_raw)
+possum_clean$site = as.factor(possum_clean$site)
 #View(possum_raw)
-#summary(possum_clean)
+summary(possum_clean)
 ```
 
 
 ```{r}
 possum_og <- data.frame(possum_clean, row.names = 1)
-possum =    # log thing
+
+
+possum_log = data.frame(possum_clean, row.names = 1)  # log thing
+possum_log$hdlngth = log(possum_log$hdlngth)
 #possum_numeric = subset(possum, select = -c(site, Pop, sex))
 #View(possum)
-summary(possum)
+summary(possum_og)
+summary(possum_log)
 #str(possum_numeric)
 #summary(possum_numeric)
 ```
@@ -115,7 +120,12 @@ summary(mod5)
 ```
 
 
-
+```{r}
+# least significant previous variable = site, previous adj r^2 = 0.1597
+# 7 variables
+mod5_log = lm(age~Pop+hdlngth+taill+footlgth+eye+chest+belly, data = possum)
+summary(mod5)
+```
 ```{}
 Best model = mod 5 = lm(age~Pop+hdlngth+taill+footlgth+eye+chest+belly, data = possum)
 

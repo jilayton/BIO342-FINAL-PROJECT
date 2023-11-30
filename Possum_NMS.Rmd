@@ -86,5 +86,3 @@ plot(nmsfood, type = "t", display=c("sites"))
 
 
 
-
-

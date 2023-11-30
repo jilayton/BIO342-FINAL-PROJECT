@@ -56,6 +56,7 @@ fviz_pca_ind(possum.pca,
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE #Avoid text overlapping
              )
+
 ```
 
 

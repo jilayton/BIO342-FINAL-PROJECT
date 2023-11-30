@@ -40,7 +40,8 @@ possum_clean = na.omit(possum_raw)
 
 
 ```{r}
-possum <- data.frame(possum_clean, row.names = 1)
+possum_og <- data.frame(possum_clean, row.names = 1)
+possum =    # log thing
 #possum_numeric = subset(possum, select = -c(site, Pop, sex))
 #View(possum)
 summary(possum)

@@ -94,7 +94,14 @@ biplot(possum.pca, choices = 2:1, scale = 1, pc.biplot = FALSE)
 coord = possum.pca$x # pulls out just the info from the pca results
 plot(coord[,1], coord[,2]) # plots the first two axes of the pca
 plot(coord[,1], coord[,2], cex= 0.1*possum_pca$age) # now the symbol size tells you mpg
+possum_pca$sex = possum_clean$sex
+plot(coord[,1], coord[,2], cex= 0.1*possum_pca$age, pch=possum_pca$sex)
 #text(coord[,1], coord[,2], row.names(possum_pca))
+plot(coord[,1], coord[,2], pch=possum_pca$sex)
+possum_pca$site = possum_clean$site
+plot(coord[,1], coord[,2], pch=possum_pca$site)
+possum_pca$Pop = possum_clean$Pop
+plot(coord[,1], coord[,2], pch=possum_pca$Pop)
 ```
 
 

@@ -34,16 +34,22 @@ library(mvabund)
 ```{r}
 possum_raw <- read_csv("possum.csv")
 possum_clean = na.omit(possum_raw)
+possum_nocase = data.frame(possum_clean, row.names = 1)
+#str(possum_nocase)
+possum_nocase$site = as.factor(possum_nocase$site)
+possum_nocase$Pop = as.factor(possum_nocase$Pop)
+possum_nocase$sex = as.factor(possum_nocase$sex)
+#str(possum_nocase)
+possum_nocase = subset(possum_nocase, select = -c(Pop))
 #View(possum_raw)
-#summary(possum_clean)
+summary(possum_nocase)
 ```
 
 
 ```{r}
-possum <- data.frame(possum_clean, row.names = 1)
 #possum_numeric = subset(possum, select = -c(site, Pop, sex))
 #View(possum)
-summary(possum)
+summary(possum_nocase)
 #str(possum_numeric)
 #summary(possum_numeric)
 ```

@@ -172,10 +172,6 @@ possum_pca$Pop = possum_clean$Pop
 plot(coord[,1], coord[,2], pch=possum_pca$Pop)
 ```
 
-```{r}
-ggplot() +
-  geom_point(data = coord, aes(x = coord[,1], y = coord[,2], col = ))
-```
 
 
 

@@ -1,5 +1,5 @@
 ---
-title: "Possum MLR"
+title: "Possum MLR Age Log"
 author: "Jude"
 date: "2023-11-02"
 output: html_document
@@ -40,7 +40,8 @@ possum_clean = na.omit(possum_raw)
 
 
 ```{r}
-possum <- data.frame(possum_clean, row.names = 1)
+possum_og <- data.frame(possum_clean, row.names = 1)
+possum =    # log thing
 #possum_numeric = subset(possum, select = -c(site, Pop, sex))
 #View(possum)
 summary(possum)
@@ -55,6 +56,7 @@ summary(possum)
 # 12 variables
 mod0 = lm(age~site+Pop+sex+hdlngth+skullw+totlngth+taill+footlgth+earconch+eye+chest+belly, data = possum)
 summary(mod0)
+plot(mod0)
 ```
 
 
@@ -107,20 +109,6 @@ summary(mod6)
 ```
 
 
-```{r}
-# least significant previous(x2) variable besides taill = chest, previous adj r^2 = 0.1618 (1622 before that)
-# 6 variables
-mod6a = lm(age~Pop+hdlngth+taill+footlgth+eye+belly, data = possum)
-summary(mod6a)
-```
-
-
-```{r}
-# least significant previous(x2) variable besides taill and chest = , previous adj r^2 = 0.16 (1622 before that)
-# 6 variables
-mod6b = lm(age~Pop+hdlngth+taill+footlgth+chest+belly, data = possum)
-summary(mod6b)
-```
 
 ```{r}
 summary(mod5)

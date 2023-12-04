@@ -55,6 +55,12 @@ PCNames = c("age", "hdlngth", "skullw", "totlngth", "taill", "footlgth", "earcon
 
 
 ```{r}
+gradient_colors = c("#00AFBB", "#E7B800", "#FC4E07")
+```
+
+
+
+```{r}
 PC1 = possum.pca$rotation[1:10]
 PC1_DF = tibble(PCNames, PC1)
 str(PC1_DF)
@@ -77,17 +83,18 @@ str(PC3_DF)
 
 ```{r}
 ggplot(PC1_DF, aes(x = fct_reorder(PCNames,PC1) , y = PC1)) + 
-  geom_col()+
-  labs(x = "Variable", y = "Effect on PC1")
-
+  geom_col(aes(fill = abs(PC1)))+
+  labs(x = "Variable", y = "Effect on PC1", title = 'Variable Importance Bar Graph: All Possums PC1', fill = "Contribution to PC1")+
+  scale_fill_gradientn(colors = gradient_colors)
 ```
 
 
 
 ```{r}
 ggplot(PC2_DF, aes(x = fct_reorder(PCNames,PC2) , y = PC2)) + 
-  geom_col() +
-  labs(x = "Variable", y = "Effect on PC2")
+  geom_col(aes(fill = abs(PC2))) +
+  labs(x = "Variable", y = "Effect on PC2", title = 'Variable Importance Bar Graph: All Possums PC2', fill = "Contribution to PC2")+
+  scale_fill_gradientn(colors = gradient_colors)
 
 ```
 
@@ -104,39 +111,29 @@ ggplot(PC3_DF, aes(x = fct_reorder(PCNames,PC3) , y = PC3)) +
 
 ```{r}
 
-fviz_eig(possum.pca)
+fviz_eig(possum.pca, barfill = "#6efafb")
 fviz_pca_ind(possum.pca,
              axes = c(2,1),
              col.ind = "cos2", # Color by quality of representation
-             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             gradient.cols = gradient_colors,
              repel = TRUE #Avoid text overlapping
              )
 
-```
 
-
-```{r}
 fviz_pca_ind(possum.pca,
              axes = c(2,1),
              col.ind = "cos2", # Color by quality of representation
-             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             gradient.cols = gradient_colors,
              repel = TRUE #Avoid text overlapping
              )
-```
 
-
-
-```{r}
 fviz_pca_var(possum.pca,
              axes = c(2,1),
              col.var = "contrib", # Color by contributions to the PC
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE #Avoid text overlapping
              )
-```
 
-
-```{r}
 fviz_pca_biplot(possum.pca, repel = TRUE,
                 axes = c(2,1),
                 col.var = "#2E9FDF", # Variables color
@@ -146,7 +143,8 @@ fviz_pca_biplot(possum.pca, repel = TRUE,
 fviz_pca_biplot(possum.pca, repel = TRUE,
                 axes = c(2,1),
                 col.var = "contrib", # Color by contributions to the PC
-                gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+                gradient.cols = gradient_colors,
+                title = 'PCA Biplot of All Possums'
                 )
 ```
 

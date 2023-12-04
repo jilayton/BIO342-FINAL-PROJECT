@@ -48,11 +48,33 @@ str(V_Possum)
 ```
 
 
+
+
 ```{r}
 #Vic possum PCA
 V_Possum.pca <- prcomp(V_Possum_Numeric, center = TRUE,scale. = TRUE)
 summary(V_Possum.pca)
+```
 
+
+```{r}
+PCNames = c("age", "hdlngth", "skullw", "totlngth", "taill", "footlgth", "earconch", "eye", "chest", "belly")
+```
+
+
+```{r}
+V_PC1 = V_Possum.pca$rotation[1:10]
+V_PC1_DF = tibble(PCNames, V_PC1)
+str(V_PC1_DF)
+
+V_PC2 = V_Possum.pca$rotation[11:20]
+V_PC2_DF = tibble(PCNames, V_PC2)
+str(V_PC2_DF)
+```
+
+
+
+```{r}
 fviz_eig(V_Possum.pca)
 fviz_pca_ind(V_Possum.pca,
              axes = c(2,1),
@@ -82,6 +104,19 @@ fviz_pca_biplot(V_Possum.pca, repel = TRUE,
                 )
 
 ```
+
+
+```{r}
+ggplot(V_PC1_DF, aes(x = fct_reorder(PCNames,V_PC1) , y = V_PC1)) + 
+  geom_col()+
+  labs(x = "Variable", y = "Effect on V_PC1")
+
+ggplot(V_PC2_DF, aes(x = fct_reorder(PCNames,V_PC2) , y = V_PC2)) + 
+  geom_col() +
+  labs(x = "Variable", y = "Effect on V_PC2")
+
+```
+
 
 ```{r}
 #Some plots for Victoria Possums
@@ -115,7 +150,21 @@ plot(coord[,1], coord[,2], pch=V_Possum.pca$site)
 
 O_Possum.pca <- prcomp(O_Possum_Numeric, center = TRUE,scale. = TRUE)
 summary(V_Possum.pca)
+```
 
+
+```{r}
+O_PC1 = O_Possum.pca$rotation[1:10]
+O_PC1_DF = tibble(PCNames, O_PC1)
+str(O_PC1_DF)
+
+O_PC2 = O_Possum.pca$rotation[11:20]
+O_PC2_DF = tibble(PCNames, O_PC2)
+str(O_PC2_DF)
+```
+
+
+```{r}
 fviz_eig(O_Possum.pca)
 fviz_pca_ind(O_Possum.pca,
              axes = c(2,1),
@@ -147,6 +196,21 @@ fviz_pca_biplot(O_Possum.pca, repel = TRUE,
 ```
 
 
+
+```{r}
+ggplot(O_PC1_DF, aes(x = fct_reorder(PCNames,O_PC1) , y = O_PC1)) + 
+  geom_col()+
+  labs(x = "Variable", y = "Effect on O_PC1")
+
+
+ggplot(O_PC2_DF, aes(x = fct_reorder(PCNames,O_PC2) , y = O_PC2)) + 
+  geom_col() +
+  labs(x = "Variable", y = "Effect on O_PC2")
+
+```
+
+
+
 ```{r}
 coord = O_Possum.pca$x # pulls out just the info from the pca results
 plot(coord[,1], coord[,2]) # plots the first two axes of the pca
@@ -164,106 +228,5 @@ plot(coord[,1], coord[,2], pch=O_Possum.pca$site)
 # plot(coord[,1], coord[,2], pch=possum_pca$Pop)
 ```
 
-
-
-```{r}
-PCNames = c("age", "hdlngth", "skullw", "totlngth", "taill", "footlgth", "earconch", "eye", "chest", "belly")
-```
-
-
-```{r}
-V_PC1 = V_Possum.pca$rotation[1:10]
-V_PC1_DF = tibble(PCNames, V_PC1)
-str(V_PC1_DF)
-#View(PC1_DF)
-```
-
-
-```{r}
-V_PC2 = V_Possum.pca$rotation[11:20]
-V_PC2_DF = tibble(PCNames, V_PC2)
-str(V_PC2_DF)
-```
-
-
-```{r}
-V_PC3 = V_Possum.pca[21:30]
-V_PC3_DF = tibble(PCNames, V_PC3)
-str(V_PC3_DF)
-```
-
-```{r}
-ggplot(V_PC1_DF, aes(x = fct_reorder(PCNames,V_PC1) , y = V_PC1)) + 
-  geom_col()+
-  labs(x = "Variable", y = "Effect on V_PC1")
-
-```
-
-
-
-```{r}
-ggplot(V_PC2_DF, aes(x = fct_reorder(PCNames,V_PC2) , y = V_PC2)) + 
-  geom_col() +
-  labs(x = "Variable", y = "Effect on V_PC2")
-
-```
-
-
-```{}
-ggplot(V_PC3_DF, aes(x = fct_reorder(PCNames,V_PC3) , y = V_PC3)) + 
-  geom_col() +
-  labs(x = "Variable", y = "Effect on V_PC3")
-
-```
-
-
-
-
-
-
-```{r}
-O_PC1 = O_Possum.pca$rotation[1:10]
-O_PC1_DF = tibble(PCNames, O_PC1)
-str(O_PC1_DF)
-#View(PC1_DF)
-```
-
-
-```{r}
-O_PC2 = O_Possum.pca$rotation[11:20]
-O_PC2_DF = tibble(PCNames, O_PC2)
-str(O_PC2_DF)
-```
-
-
-```{r}
-O_PC3 = O_Possum.pca[21:30]
-O_PC3_DF = tibble(PCNames, O_PC3)
-str(O_PC3_DF)
-```
-
-```{r}
-ggplot(O_PC1_DF, aes(x = fct_reorder(PCNames,O_PC1) , y = O_PC1)) + 
-  geom_col()+
-  labs(x = "Variable", y = "Effect on O_PC1")
-
-```
-
-
-
-```{r}
-ggplot(O_PC2_DF, aes(x = fct_reorder(PCNames,O_PC2) , y = O_PC2)) + 
-  geom_col() +
-  labs(x = "Variable", y = "Effect on O_PC2")
-
-```
-
-
-```{}
-ggplot(O_PC3_DF, aes(x = fct_reorder(PCNames,O_PC3) , y = O_PC3)) + 
-  geom_col() +
-  labs(x = "Variable", y = "Effect on O_PC3")
-
-```
 
 

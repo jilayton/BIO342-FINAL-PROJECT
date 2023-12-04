@@ -1,3 +1,19 @@
+---
+title: "Split Possum MLR"
+author: "Jude"
+date: "2023-12-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r}
 library(readr)
@@ -35,7 +51,233 @@ summary(possum_clean)
 ```{r}
 V_Possum <- possum_clean[possum_clean$Pop == "Vic", ]
 O_Possum <- possum_clean[possum_clean$Pop == "other", ]
+#str(V_Possum)
+#str(O_Possum)
+V_Possum = subset(V_Possum, select = -(Pop))
+O_Possum = subset(O_Possum, select = -(Pop))
 str(V_Possum)
 str(O_Possum)
-#summary(V_Possum)
-#summary(O_Possum)
+
+```
+
+
+# Check Assumptions V_possum
+
+
+```{r}
+# 11 variables, no Pop
+V_mod0a = lm(age~site+sex+hdlngth+skullw+totlngth+taill+footlgth+earconch+eye+chest+belly, data = V_Possum)
+summary(V_mod0a)
+plot(V_mod0a)
+```
+
+
+# Need to Log V_possum
+
+
+```{r}
+V_Possum_Log = data.frame(V_Possum)  # log thing
+
+V_Possum_Log$hdlngth = log(V_Possum_Log$hdlngth)
+V_Possum_Log$skullw = log(V_Possum_Log$skullw)
+V_Possum_Log$totlngth = log(V_Possum_Log$totlngth)
+V_Possum_Log$taill = log(V_Possum_Log$taill)
+V_Possum_Log$footlgth = log(V_Possum_Log$footlgth)
+V_Possum_Log$eye = log(V_Possum_Log$eye)
+V_Possum_Log$earconch = log(V_Possum_Log$earconch)
+V_Possum_Log$chest = log(V_Possum_Log$chest)
+V_Possum_Log$belly = log(V_Possum_Log$belly)
+V_Possum_Log$age = log(V_Possum_Log$age)
+
+#possum_numeric = subset(possum, select = -c(site, Pop, sex))
+#View(possum)
+summary(V_Possum_Log)
+```
+
+
+```{r}
+# 11 variables, no Pop
+V_mod0b = lm(age~site+sex+hdlngth+skullw+totlngth+taill+footlgth+earconch+eye+chest+belly, data = V_Possum_Log)
+summary(V_mod0b)
+plot(V_mod0b)
+```
+
+
+```{r}
+# 10 variables, least sig previous var = taill, prev adj r^2 = 0.2311
+V_mod1 = lm(age~site+sex+hdlngth+skullw+totlngth+footlgth+earconch+eye+chest+belly, data = V_Possum_Log)
+summary(V_mod1)
+```
+
+
+```{r}
+# 9 variables, least sig previous var = skullw, prev adj r^2 = 0.2547 
+V_mod2 = lm(age~site+sex+hdlngth+totlngth+footlgth+earconch+eye+chest+belly, data = V_Possum_Log)
+summary(V_mod2)
+```
+
+
+```{r}
+# 8 variables, least sig previous var = sex, prev adj r^2 = 0.2769 
+V_mod3 = lm(age~site+hdlngth+totlngth+earconch+eye+chest+belly, data = V_Possum_Log)
+summary(V_mod3)
+```
+
+
+```{r}
+# 7 variables, least sig previous var = footlgth, prev adj r^2 = 0.2973  
+V_mod4 = lm(age~site+hdlngth+totlngth+earconch+eye+chest+belly, data = V_Possum_Log)
+summary(V_mod4)
+```
+
+
+```{r}
+# 6 variables, least sig previous var = chest, prev adj r^2 = 0.3142   
+V_mod5 = lm(age~site+hdlngth+totlngth+earconch+eye+belly, data = V_Possum_Log)
+summary(V_mod5)
+```
+
+
+```{r}
+# 5 variables, least sig previous var = site, prev adj r^2 = 0.33    
+V_mod6a = lm(age~hdlngth+totlngth+earconch+eye+belly, data = V_Possum_Log)
+summary(V_mod6a)
+```
+
+
+```{r}
+# 5 variables, least sig previous var besides site = earconch, prev adj r^2 = 0.33    
+V_mod6b = lm(age~site+hdlngth+totlngth+eye+belly, data = V_Possum_Log)
+summary(V_mod6b)
+```
+
+# Best V_Possum Model is Mod5
+
+```{r}
+#V_mod5 = lm(age~site+hdlngth+totlngth+earconch+eye+belly, data = V_Possum_Log)
+summary(V_mod5)
+```
+
+```{}
+Results: A multiple regression model containing site+hdlngth+totlngth+earconch+eye+belly explained 42.57% of the variance in age of VICTORIAN possums(F=4.448[6,36], p=0.001829). Eye had a significant positive effect (t= 3.090, p= 0.00385) and belly had a significant positive effect (t= 2.249, p= 0.03073), but overall the model was not accurate due to the relatively low r^2.
+```
+
+
+
+
+
+
+
+
+
+
+# Check Assumptions O_possum
+
+
+```{r}
+# 11 variables, no Pop
+O_mod0a = lm(age~site+sex+hdlngth+skullw+totlngth+taill+footlgth+earconch+eye+chest+belly, data = O_Possum)
+summary(O_mod0a)
+plot(O_mod0a)
+```
+
+
+# Need to Log V_possum
+
+
+```{r}
+O_Possum_Log = data.frame(O_Possum)  # log thing
+
+O_Possum_Log$hdlngth = log(O_Possum_Log$hdlngth)
+O_Possum_Log$skullw = log(O_Possum_Log$skullw)
+O_Possum_Log$totlngth = log(O_Possum_Log$totlngth)
+O_Possum_Log$taill = log(O_Possum_Log$taill)
+O_Possum_Log$footlgth = log(O_Possum_Log$footlgth)
+O_Possum_Log$eye = log(O_Possum_Log$eye)
+O_Possum_Log$earconch = log(O_Possum_Log$earconch)
+O_Possum_Log$chest = log(O_Possum_Log$chest)
+O_Possum_Log$belly = log(O_Possum_Log$belly)
+O_Possum_Log$age = log(O_Possum_Log$age)
+
+#possum_numeric = subset(possum, select = -c(site, Pop, sex))
+#View(possum)
+summary(O_Possum_Log)
+```
+
+
+```{r}
+# 14 variables, no Pop
+O_mod0b = lm(age~site+sex+hdlngth+skullw+totlngth+taill+footlgth+earconch+eye+chest+belly, data = O_Possum_Log)
+summary(O_mod0b)
+plot(O_mod0b)
+```
+
+
+```{r}
+# 13 variables, least sig previous var = belly, prev adj r^2 = 0.4368
+O_mod1 = lm(age~site+sex+hdlngth+skullw+totlngth+taill+footlgth+earconch+eye+chest, data = O_Possum_Log)
+summary(O_mod1)
+```
+
+
+```{r}
+# 12 variables, least sig previous var = belly, prev adj r^2 = 0.4496 
+O_mod2 = lm(age~site+sex+hdlngth+skullw+totlngth+taill+footlgth+eye+chest, data = O_Possum_Log)
+summary(O_mod2)
+```
+
+
+```{r}
+# 11 variables, least sig previous var = eye, prev adj r^2 = 0.4611  
+O_mod3 = lm(age~site+sex+hdlngth+skullw+totlngth+taill+footlgth+chest, data = O_Possum_Log)
+summary(O_mod3)
+```
+
+
+```{r}
+# 10 variables, least sig previous var = totlngth, prev adj r^2 = 0.4713   
+O_mod4 = lm(age~site+sex+hdlngth+skullw+taill+footlgth+chest, data = O_Possum_Log)
+summary(O_mod4)
+```
+
+
+```{r}
+# 9 variables, least sig previous var = sex, prev adj r^2 = 0.4809   
+O_mod5 = lm(age~site+hdlngth+skullw+taill+footlgth+chest, data = O_Possum_Log)
+summary(O_mod5)
+```
+
+
+```{r}
+# 8 variables, least sig previous var = skullw, prev adj r^2 = 0.4905    
+O_mod6a = lm(age~site+hdlngth+taill+footlgth+chest, data = O_Possum_Log)
+summary(O_mod6a)
+```
+
+
+```{r}
+# 9 variables, least sig previous var besides skullw = site, prev adj r^2 = 0.4905   
+O_mod6b = lm(age~hdlngth+skullw+taill+footlgth+chest, data = O_Possum_Log)
+summary(O_mod6b)
+```
+
+
+# Best O_Possum Model is Mod5
+
+
+```{r}
+#O_mod5 = lm(age~site+hdlngth+skullw+taill+footlgth+chest, data = O_Possum_Log)
+summary(O_mod5)
+```
+
+
+```{}
+Results: A multiple regression model containing site+hdlngth+skullw+taill+footlgth+chest explained 57.10% of the variance in age of OTHER possums(F=7.097[9,48], p<0.0001). Foot length had a significant negative effect (t= -3.456, p= 0.00116), chest had a significant positive effect (t= 3.127, p= 0.00300), and hind length had a significant positive effect (t = 2.857, p = 0.00630). Site 4 had a significant negative effect (t = -3.185, p = 0.00255), and site as a whole factor significantly increases r^2 (only 44.73% without it). Overall the model was not accurate due to the relatively low r^2, but was more accurate than the VICTORIAN possum model.
+```
+
+
+
+
+
+
+

@@ -35,12 +35,12 @@ summary(possum_clean)
 ```{r}
 V_Possum <- possum_clean[possum_clean$Pop == "Vic", ]
 O_Possum <- possum_clean[possum_clean$Pop == "other", ]
-#str(V_Possum)
-#str(O_Possum)
+str(V_Possum)
+str(O_Possum)
 #summary(V_Possum)
 #summary(O_Possum)
-V_Possum = subset(V_Possum, select = -c(Pop, sex))
-O_Possum = subset(O_Possum, select = -c(Pop, sex))
+V_Possum_Numeric = subset(V_Possum, select = -c(Pop, sex, site))
+O_Possum_Numeric = subset(O_Possum, select = -c(Pop, sex, site))
 str(V_Possum)
 #str(O_Possum)
 #summary(V_Possum)
@@ -50,23 +50,27 @@ str(V_Possum)
 
 ```{r}
 #Vic possum PCA
-V_possum.pca <- prcomp(V_Possum, center = TRUE,scale. = TRUE)
-summary(V_possum.pca)
+V_Possum.pca <- prcomp(V_Possum_Numeric, center = TRUE,scale. = TRUE)
+summary(V_Possum.pca)
 
-fviz_eig(V_possum.pca)
-fviz_pca_ind(V_possum.pca,
+fviz_eig(V_Possum.pca)
+fviz_pca_ind(V_Possum.pca,
+             axes = c(2,1),
              col.ind = "cos2", # Color by the quality of representation
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE     # Avoid text overlapping
 )
 
-fviz_pca_var(V_possum.pca,
+fviz_pca_var(V_Possum.pca,
+             axes = c(2,1),
              col.var = "contrib", # Color by contributions to the PC
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE     # Avoid text overlapping
 )
 
-fviz_pca_biplot(V_possum.pca, repel = TRUE,
+fviz_pca_biplot(V_Possum.pca,
+                axes = c(2,1),
+                repel = TRUE,
                 col.var = "#2E9FDF", # Variables color
                 col.ind = "#696969"  # Individuals color
 )
@@ -75,18 +79,21 @@ fviz_pca_biplot(V_possum.pca, repel = TRUE,
 
 ```{r}
 #Some plots for Victoria Possums
-coord = V_possum.pca$x # pulls out just the info from the pca results
+coord = V_Possum.pca$x # pulls out just the info from the pca results
 plot(coord[,1], coord[,2]) # plots the first two axes of the pca
 
 plot(coord[,1], coord[,2], cex= 0.1*V_Possum$age) # now the symbol size tells you age
 
-V_possum.pca$sex = possum_clean$sex
-plot(coord[,1], coord[,2], pch=V_possum.pca$sex)
+
+V_Possum.pca$sex = as.character(V_Possum$sex)
+str(V_Possum.pca)
+plot(coord[,1], coord[,2], pch=V_Possum.pca$sex)
 
 #text(coord[,1], coord[,2], row.names(possum_pca))
 # plot(coord[,1], coord[,2], pch=possum_pca$sex)
-V_possum.pca$site = as.character(possum_clean$site)
-plot(coord[,1], coord[,2], pch=V_possum.pca$site)
+
+V_Possum.pca$site = as.character(V_Possum$site)
+plot(coord[,1], coord[,2], pch=V_Possum.pca$site)
 # possum_pca$Pop = possum_clean$Pop
 # plot(coord[,1], coord[,2], pch=possum_pca$Pop)
 ```
@@ -100,23 +107,27 @@ plot(coord[,1], coord[,2], pch=V_possum.pca$site)
 ```{r}
 #Other Possum PCA
 
-O_possum.pca <- prcomp(O_Possum, center = TRUE,scale. = TRUE)
-summary(V_possum.pca)
+O_Possum.pca <- prcomp(O_Possum_Numeric, center = TRUE,scale. = TRUE)
+summary(V_Possum.pca)
 
-fviz_eig(O_possum.pca)
-fviz_pca_ind(O_possum.pca,
+fviz_eig(O_Possum.pca)
+fviz_pca_ind(O_Possum.pca,
+             axes = c(2,1),
              col.ind = "cos2", # Color by the quality of representation
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE     # Avoid text overlapping
 )
 
-fviz_pca_var(O_possum.pca,
+fviz_pca_var(O_Possum.pca,
+             axes = c(2,1),
              col.var = "contrib", # Color by contributions to the PC
              gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
              repel = TRUE     # Avoid text overlapping
 )
 
-fviz_pca_biplot(O_possum.pca, repel = TRUE,
+fviz_pca_biplot(O_Possum.pca,
+                axes = c(2,1),
+                repel = TRUE,
                 col.var = "#2E9FDF", # Variables color
                 col.ind = "#696969"  # Individuals color
 )
@@ -125,20 +136,72 @@ fviz_pca_biplot(O_possum.pca, repel = TRUE,
 
 
 ```{r}
-coord = O_possum.pca$x # pulls out just the info from the pca results
+coord = O_Possum.pca$x # pulls out just the info from the pca results
 plot(coord[,1], coord[,2]) # plots the first two axes of the pca
 
 plot(coord[,1], coord[,2], cex= 0.1*O_Possum$age) # now the symbol size tells you age
 
-O_possum.pca$sex = possum_clean$sex
-plot(coord[,1], coord[,2], pch=O_possum.pca$sex)
+O_Possum.pca$sex = as.character(O_Possum$sex)
+plot(coord[,1], coord[,2], pch=O_Possum.pca$sex)
 # #text(coord[,1], coord[,2], row.names(possum_pca))
 # plot(coord[,1], coord[,2], pch=possum_pca$sex)
 
-O_possum.pca$site = as.character(possum_clean$site +2)
-plot(coord[,1], coord[,2], pch=O_possum.pca$site)
+O_Possum.pca$site = as.character(O_Possum$site)
+plot(coord[,1], coord[,2], pch=O_Possum.pca$site)
 # possum_pca$Pop = possum_clean$Pop
 # plot(coord[,1], coord[,2], pch=possum_pca$Pop)
+```
+
+
+
+```{r}
+PCNames = c("age", "hdlngth", "skullw", "totlngth", "taill", "footlgth", "earconch", "eye", "chest", "belly")
+```
+
+
+```{r}
+V_PC1 = V_Possum.pca$rotation[1:10]
+V_PC1_DF = tibble(PCNames, V_PC1)
+str(V_PC1_DF)
+#View(PC1_DF)
+```
+
+
+```{r}
+V_PC2 = V_Possum.pca$rotation[11:20]
+V_PC2_DF = tibble(PCNames, V_PC2)
+str(V_PC2_DF)
+```
+
+
+```{r}
+V_PC3 = V_Possum.pca[21:30]
+V_PC3_DF = tibble(PCNames, V_PC3)
+str(V_PC3_DF)
+```
+
+```{r}
+ggplot(V_PC1_DF, aes(x = fct_reorder(PCNames,V_PC1) , y = V_PC1)) + 
+  geom_col()+
+  labs(x = "Variable", y = "Effect on V_PC1")
+
+```
+
+
+
+```{r}
+ggplot(V_PC2_DF, aes(x = fct_reorder(PCNames,V_PC2) , y = V_PC2)) + 
+  geom_col() +
+  labs(x = "Variable", y = "Effect on V_PC2")
+
+```
+
+
+```{}
+ggplot(V_PC3_DF, aes(x = fct_reorder(PCNames,V_PC3) , y = V_PC3)) + 
+  geom_col() +
+  labs(x = "Variable", y = "Effect on V_PC3")
+
 ```
 
 
@@ -146,5 +209,49 @@ plot(coord[,1], coord[,2], pch=O_possum.pca$site)
 
 
 
+```{r}
+O_PC1 = O_Possum.pca$rotation[1:10]
+O_PC1_DF = tibble(PCNames, O_PC1)
+str(O_PC1_DF)
+#View(PC1_DF)
+```
+
+
+```{r}
+O_PC2 = O_Possum.pca$rotation[11:20]
+O_PC2_DF = tibble(PCNames, O_PC2)
+str(O_PC2_DF)
+```
+
+
+```{r}
+O_PC3 = O_Possum.pca[21:30]
+O_PC3_DF = tibble(PCNames, O_PC3)
+str(O_PC3_DF)
+```
+
+```{r}
+ggplot(O_PC1_DF, aes(x = fct_reorder(PCNames,O_PC1) , y = O_PC1)) + 
+  geom_col()+
+  labs(x = "Variable", y = "Effect on O_PC1")
+
+```
+
+
+
+```{r}
+ggplot(O_PC2_DF, aes(x = fct_reorder(PCNames,O_PC2) , y = O_PC2)) + 
+  geom_col() +
+  labs(x = "Variable", y = "Effect on O_PC2")
+
+```
+
+
+```{}
+ggplot(O_PC3_DF, aes(x = fct_reorder(PCNames,O_PC3) , y = O_PC3)) + 
+  geom_col() +
+  labs(x = "Variable", y = "Effect on O_PC3")
+
+```
 
 

@@ -163,11 +163,11 @@ plot(coord[,1], coord[,2]) # plots the first two axes of the pca
 plot(coord[,1], coord[,2], cex= 0.1*possum_pca$age) # now the symbol size tells you age
 
 possum_pca$sex = possum_clean$sex
+str(possum_pca)
 plot(coord[,1], coord[,2], cex= 0.1*possum_pca$age, pch=possum_pca$sex)
 #text(coord[,1], coord[,2], row.names(possum_pca))
 plot(coord[,1], coord[,2], pch=possum_pca$sex)
 possum_pca$site = as.character(possum_clean$site)
-plot(coord[,1], coord[,2], pch=possum_pca$site)
 possum_pca$Pop = possum_clean$Pop
 plot(coord[,1], coord[,2], pch=possum_pca$Pop)
 ```

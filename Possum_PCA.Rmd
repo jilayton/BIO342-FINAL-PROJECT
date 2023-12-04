@@ -166,10 +166,10 @@ possum_pca$sex = possum_clean$sex
 str(possum_pca)
 plot(coord[,1], coord[,2], cex= 0.1*possum_pca$age, pch=possum_pca$sex)
 #text(coord[,1], coord[,2], row.names(possum_pca))
-plot(coord[,1], coord[,2], pch=possum_pca$sex)
+plot(coord[,2], coord[,1], pch=possum_pca$site)
 possum_pca$site = as.character(possum_clean$site)
 possum_pca$Pop = possum_clean$Pop
-plot(coord[,1], coord[,2], pch=possum_pca$Pop)
+plot(coord[,2], coord[,1], pch=possum_pca$Pop)
 ```
 
 

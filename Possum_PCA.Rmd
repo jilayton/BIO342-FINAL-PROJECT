@@ -1,3 +1,8 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
 
 #Install Packages
 ```{r}
@@ -111,7 +116,7 @@ ggplot(PC3_DF, aes(x = fct_reorder(PCNames,PC3) , y = PC3)) +
 
 ```{r}
 
-fviz_eig(possum.pca, barfill = "#6efafb")
+fviz_eig(possum.pca,, main = 'Scree Plot of All Possums', barfill = "#6efafb")
 fviz_pca_ind(possum.pca,
              axes = c(2,1),
              col.ind = "cos2", # Color by quality of representation
@@ -167,7 +172,16 @@ plot(coord[,1], coord[,2], cex= 0.1*possum_pca$age, pch=possum_pca$sex)
 plot(coord[,2], coord[,1], pch=possum_pca$site)
 possum_pca$site = as.character(possum_clean$site)
 possum_pca$Pop = possum_clean$Pop
-plot(coord[,2], coord[,1], pch=possum_pca$Pop)
+
+plot(coord[,2], coord[,1], pch=possum_pca$site, main = "All Possums PC2 by PC1: Separated by Site", xlab = "PC1", ylab = "PC2", font.main = 2, font.lab = 2)
+legend(x = "topright", text.font = 3, pch = c("1","2","3","4","5","6","7"),  
+       legend=c("Site 1","Site 2","Site 3","Site 4","Site 5","Site 6","Site 7"), cex = 0.8)
+
+plot(coord[,2], coord[,1], pch=possum_pca$Pop, main = "All Possums PC2 by PC1:  Separated by Population", xlab = "PC1", ylab = "PC2", font.main = 2, font.lab = 2)
+legend(x = "topright", text.font = 3, pch = c("V","O"),  
+       legend=c("Victoria", "Other"))
+
+
 ```
 
 

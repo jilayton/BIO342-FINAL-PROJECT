@@ -50,6 +50,7 @@ summary(possum_nocase)
 #possum_numeric = subset(possum, select = -c(site, Pop, sex))
 #View(possum)
 summary(possum_nocase)
+#str(possum_nocase)
 #str(possum_numeric)
 #summary(possum_numeric)
 ```

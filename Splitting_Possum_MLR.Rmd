@@ -16,10 +16,17 @@ This is an R Markdown document. Markdown is a simple formatting syntax for autho
 When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
 
 ```{r}
+#install.packages("viridis")
+```
+
+
+
+```{r}
 library(readr)
 library(tidyverse)
 library(factoextra)
 library(forcats)
+library(viridis)
 ```
 
 
@@ -49,12 +56,35 @@ summary(possum_clean)
 
 
 ```{r}
+possum_log = data.frame(possum_clean)  # log thing
+
+possum_log$hdlngth = log(possum_log$hdlngth)
+possum_log$skullw = log(possum_log$skullw)
+possum_log$totlngth = log(possum_log$totlngth)
+possum_log$taill = log(possum_log$taill)
+possum_log$footlgth = log(possum_log$footlgth)
+possum_log$eye = log(possum_log$eye)
+possum_log$earconch = log(possum_log$earconch)
+possum_log$chest = log(possum_log$chest)
+possum_log$belly = log(possum_log$belly)
+possum_log$age = log(possum_log$age)
+
+#possum_numeric = subset(possum, select = -c(site, Pop, sex))
+#View(possum)
+summary(possum_log)
+#str(possum_numeric)
+#summary(possum_numeric)
+```
+
+
+
+```{r}
 V_Possum <- possum_clean[possum_clean$Pop == "Vic", ]
 O_Possum <- possum_clean[possum_clean$Pop == "other", ]
 #str(V_Possum)
 #str(O_Possum)
-V_Possum = subset(V_Possum, select = -(Pop))
-O_Possum = subset(O_Possum, select = -(Pop))
+#V_Possum = subset(V_Possum, select = -(Pop))
+#O_Possum = subset(O_Possum, select = -(Pop))
 str(V_Possum)
 str(O_Possum)
 
@@ -151,6 +181,10 @@ V_mod6b = lm(age~site+hdlngth+totlngth+eye+belly, data = V_Possum_Log)
 summary(V_mod6b)
 ```
 
+
+
+
+
 # Best V_Possum Model is Mod5
 
 ```{r}
@@ -182,7 +216,7 @@ plot(O_mod0a)
 ```
 
 
-# Need to Log V_possum
+# Need to Log O_possum
 
 
 ```{r}
@@ -272,11 +306,143 @@ summary(O_mod5)
 
 
 ```{}
-Results: A multiple regression model containing site+hdlngth+skullw+taill+footlgth+chest explained 57.10% of the variance in age of OTHER possums(F=7.097[9,48], p<0.0001). Foot length had a significant negative effect (t= -3.456, p= 0.00116), chest had a significant positive effect (t= 3.127, p= 0.00300), and hind length had a significant positive effect (t = 2.857, p = 0.00630). Site 4 had a significant negative effect (t = -3.185, p = 0.00255), and site as a whole factor significantly increases r^2 (only 44.73% without it). Overall the model was not accurate due to the relatively low r^2, but was more accurate than the VICTORIAN possum model.
+Results: A multiple regression model containing site+hdlngth+skullw+taill+footlgth+chest explained 57.10% of the variance in age of OTHER possums(F=7.097[9,48], p<0.0001). Foot length had a significant negative effect (t= -3.456, p= 0.00116), chest had a significant positive effect (t= 3.127, p= 0.00300), and head length had a significant positive effect (t = 2.857, p = 0.00630). Site 4 had a significant negative effect (t = -3.185, p = 0.00255), and site as a whole factor significantly increases r^2 (only 44.73% without it). Overall the model was not accurate due to the relatively low r^2, but was more accurate than the VICTORIAN possum model.
+```
+
+
+```{}
+hdlngth       5.84395    2.04514   2.857  0.00630 **
+skullw        1.89927    1.69111   1.123  0.26698   
+taill         2.36994    1.43479   1.652  0.10511   
+footlgth     -7.00984    2.02809  -3.456  0.00116 **
+chest         3.60792    1.15390   3.127  0.00300 **
+```
+
+```{r}
+ggplot(data = O_Possum_Log, aes(x = hdlngth, y = age, col = site))+
+  geom_point()+
+  labs(x = "Head  Length", y = "Age", title = "Other Possum Age by Head Length: Colored by Site") +
+  scale_color_viridis(discrete = 1,
+                        begin = 0.4286,
+                        end = 1,
+                        name = "Sites", 
+                        labels = c("Site 1","Site 2","Site 3","Site 4","Site 5","Site 6","Site 7"), 
+                        option = "D")
+  
+```
+
+
+```{r}
+ggplot(data = V_Possum_Log, aes(x = hdlngth, y = age, col = site))+
+  geom_point()+
+  labs(x = "Head  Length", y = "Age", title = "Other Possum Age by Head Length: Colored by Site") +
+  scale_color_viridis(discrete = 1,
+                        begin = 0,
+                        end = 0.2857,
+                        name = "Sites", 
+                        labels = c("Site 1","Site 2","Site 3","Site 4","Site 5","Site 6","Site 7"), 
+                        option = "D")
+  
+```
+
+```{r}
+gradient_colors = c("#00AFBB", "#E7B800", "#FC4E07")
 ```
 
 
 
+```{r}
+ggplot(data = possum_log, aes(x = hdlngth, y = age, shape = Pop, size = 1.5))+
+  geom_point(aes(color = earconch, position = "jitter"))+
+  labs(x = "Head Length", y = "Age", title = "Possum Age by Head Length: Colored by Ear Conch Length") +
+  scale_color_gradientn(colors = gradient_colors) +
+  guides(size = FALSE)
+  
+```
+
+
+```{r}
+ggplot(data = possum_log, aes(x = earconch, y = age, shape = Pop, color = Pop))+
+  geom_point(aes( size = 1.5))+
+  labs(x = "Ear Conch Length", y = "Age", title = "Possum Age by Ear Conch Length")+
+  scale_color_manual(values = c(gradient_colors[1], gradient_colors[3]))+
+  guides(size = FALSE)
+  
+```
+
+```{}
+
+V_Possum_Log = possum_log
+O_Possum_Log = possum_log$Pop
+```
+
+
+
+```{}
+# All Possum Log Mod4
+all_mod_4 = lm(age~site+hdlngth+taill+footlgth+eye+chest+belly, data = possum_log)
+#summary(all_mod_4)
+predicted_all_mod_4 <- data.frame(pred_age_all_mod_4 = predict(all_mod_4, possum_log), hdlngth=possum_log$hdlngth, Pop=possum_log$Pop)
+```
+
+
+
+```{}
+#Victoria Possum Log Mod5
+V_mod5 = lm(age~site+hdlngth+totlngth+earconch+eye+belly, data = V_Possum_Log)
+#summary(V_mod5)
+predicted_V_mod5 <- data.frame(pred_age_V_mod5 = predict(V_mod5, V_Possum_Log), hdlngth=V_Possum_Log$hdlngth, Pop=V_Possum_Log$Pop)
+```
+
+
+
+```{}
+# Other Possum Log Mod5
+O_mod5 = lm(age~site+hdlngth+skullw+taill+footlgth+chest, data = O_Possum_Log)
+#summary(O_mod5)
+predicted_O_mod5 <- data.frame(pred_age_O_mod5 = predict(O_mod5, O_Possum_Log), hdlngth=O_Possum_Log$hdlngth, Pop=O_Possum_Log$Pop)
+```
+
+
+
+
+```{}
+
+# read dataset
+df = possum_log
+
+# create multiple linear model
+lm_fit <- lm(mpg ~ cyl + hp, data=df)
+summary(lm_fit)
+
+# save predictions of the model in the new data frame 
+# together with variable you want to plot against
+predicted_df <- data.frame(mpg_pred = predict(lm_fit, df), hp=df$hp)
+
+# this is the predicted line of multiple linear regression
+ggplot(data = df, aes(x = mpg, y = hp)) + 
+  geom_point(color='blue') +
+  geom_line(color='red',data = predicted_df, aes(x=mpg_pred, y=hp))
+
+
+```
+
+
+
+
+
+
+```{}
+ggplot(data = possum_log, aes(x = hdlngth, y = age, shape = Pop, size = 1.5))+
+  geom_point(aes(color = earconch, position = "jitter"))+
+  labs(x = "Log(Head Length)", y = "Log(Age)", title = "Possum Age by Head Length: Colored by Log(Earconch)") +
+  scale_color_gradientn(colors = gradient_colors)
+  #geom_line(color='green',data = predicted_all_mod_4, aes(x=pred_age_all_mod_4, y=hdlngth))
+    #geom_line(color='purple',data = predicted_V_mod5, aes(x=pred_age_V_mod5, y=hdlngth))
+    #geom_line(color='pink',data = predicted_O_mod5, aes(x=pred_age_O_mod5, y=hdlngth))
+  
+  
+```
 
 
 

@@ -47,6 +47,15 @@ summary(possum_nocase)
 
 
 ```{r}
+# 11 variables, no Pop
+mod0 = lm(age~site+sex+hdlngth+skullw+totlngth+taill+footlgth+earconch+eye+chest+belly, data = possum_nocase)
+summary(mod0)
+plot(mod0)
+```
+
+
+
+```{r}
 possum_log = data.frame(possum_nocase)  # log thing
 
 possum_log$hdlngth = log(possum_log$hdlngth)
